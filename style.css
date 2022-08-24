@@ -7,10 +7,10 @@ body {
   display: grid;
   height: 100vh;
   background-color: rgb(241, 179, 189);
-
+  align-content: center;
   grid-template-rows: 200px 200px 200px;
 }
-h3 {
+h2 {
   grid-row: 1/2;
 }
 
@@ -35,5 +35,5 @@ button {
   align-items: center;
   justify-content: flex-start;
 
-  font-size: 30px;
+  font-size: 25px;
 }
