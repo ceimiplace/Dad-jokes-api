@@ -1,8 +1,26 @@
 const jokes = document.querySelector(".jokes");
 const getJokes = document.querySelector(".get-jokes");
 const getImage = document.querySelector(".get-image");
-const image = document.querySelector(".image");
-function getData() {
+const imageJoke = document.querySelector(".image-joke");
+const textJoke = document.querySelector(".text-joke");
+
+class GetData {
+  constructor(url) {
+    this.url = url;
+  }
+  get() {
+    return fetch(`${this.url}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    }).then((resp) => resp.json());
+  }
+}
+const DadApiJoke = new GetData("https://icanhazdadjoke.com/");
+
+// this is basic way that i impremented it , but i refractored it using classes
+/*function getData() {
   fetch("https://icanhazdadjoke.com/", {
     method: "GET",
     headers: {
@@ -11,7 +29,8 @@ function getData() {
   })
     .then((resp) => resp.json())
     .then((data) => {
-      jokes.textContent = data.joke;
+      imageJoke.src = "";
+      textJoke.textContent = data.joke;
     });
 }
 function getImg() {
@@ -23,9 +42,19 @@ function getImg() {
   })
     .then((resp) => resp.json())
     .then((data) => {
-      console.log(data);
-      image.src = `https://icanhazdadjoke.com/j/${data.id}.png`;
+      textJoke.textContent = "";
+      imageJoke.src = `https://icanhazdadjoke.com/j/${data.id}.png`;
     });
-}
-getJokes.addEventListener("click", getData);
-getImage.addEventListener("click", getImg);
+}*/
+getJokes.addEventListener("click", () => {
+  DadApiJoke.get().then((data) => {
+    imageJoke.src = "";
+    textJoke.textContent = data.joke;
+  });
+});
+getImage.addEventListener("click", () => {
+  DadApiJoke.get().then((data) => {
+    textJoke.textContent = "";
+    imageJoke.src = `https://icanhazdadjoke.com/j/${data.id}.png`;
+  });
+});
