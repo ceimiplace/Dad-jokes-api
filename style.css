@@ -37,3 +37,23 @@ button {
 
   font-size: 25px;
 }
+.buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto 10px auto;
+}
+.buttons button {
+  grid-row: 1;
+  justify-self: center;
+}
+input {
+  grid-row: 3;
+  grid-column: 3/4;
+  border: none;
+  outline: none;
+  transition: all 1s ease;
+}
+.hide {
+  opacity: 0;
+  transform: translateY(-50px);
+}
