@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/29601d2dce.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div class="container">
@@ -15,11 +19,20 @@
         <img class="image-joke" src="" alt="" />
       </div>
       <div class="buttons">
-        <button class="get-jokes">Get random Joke</button>
-        <button class="get-image">Get random Image</button>
-        <button class="search">Search random Image</button>
-        <input type="text" class="hide" />
+        <button class="get-jokes-btn">Get random Joke</button>
+        <button class="get-image-btn">Get random Image</button>
+        <button class="get-search-btn">Search random Image</button>
+        <div class="widgets" class="hide" disabled="true">
+          <input type="text" />
+          <button class="srch-btn">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
       </div>
+    </div>
+    <div class="search-results">
+      <button class="previous">Previous</button>
+      <button class="next">Next</button>
     </div>
     <script src="script.js"></script>
   </body>

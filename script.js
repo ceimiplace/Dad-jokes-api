@@ -1,11 +1,12 @@
 const jokes = document.querySelector(".jokes");
-const getJokes = document.querySelector(".get-jokes");
-const getImage = document.querySelector(".get-image");
+const getJokes = document.querySelector(".get-jokes-btn");
+const getImage = document.querySelector(".get-image-btn");
 const imageJoke = document.querySelector(".image-joke");
 const textJoke = document.querySelector(".text-joke");
-const search = document.querySelector(".search");
-const input = document.querySelector("input");
-
+const search = document.querySelector(".get-search-btn");
+const widgets = document.querySelector(".widgets");
+const input = widgets.querySelector("input");
+const searchResults = document.querySelector(".search-results");
 class GetData {
   constructor(url) {
     this.url = url;
@@ -61,21 +62,42 @@ getImage.addEventListener("click", () => {
   });
 });
 
-fetch("https://icanhazdadjoke.com/search?term='dad'", {
-  method: "GET",
-  headers: {
-    Accept: "application/json",
-  },
-})
-  .then((resp) => resp.json())
-  .then((data) => console.log(data));
+// fetch("https://icanhazdadjoke.com/search?term='dad'", {
+//   method: "GET",
+//   headers: {
+//     Accept: "application/json",
+//   },
+// })
+//   .then((resp) => resp.json())
+//   .then((data) => console.log(data));
 // adding search ui
 search.addEventListener("click", () => {
-  if (input.classList.contains("hide") == true) {
+  if (widgets.classList.contains("hide") == true) {
     input.disabled = false;
-    input.classList.remove("hide");
+    widgets.classList.remove("hide");
   } else {
     input.disabled = true;
-    input.classList.add("hide");
+    widgets.classList.add("hide");
   }
+});
+
+const searching = document.querySelector(".srch-btn");
+searching.addEventListener("click", () => {
+  fetch(`https://icanhazdadjoke.com/search?term=${input.value}&limit=10`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+  })
+    .then((resp) => resp.json())
+    .then((data) => {
+      console.log(data);
+      searchResults.textContent = "";
+      let dataResults = data.results;
+      dataResults.forEach((element) => {
+        let appendeble = document.createElement("div");
+        appendeble.textContent = element.joke;
+        searchResults.append(appendeble);
+      });
+    });
 });
