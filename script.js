@@ -91,8 +91,13 @@ function searchApi() {
       let divs = document.createElement("div");
       divs.style.display = "flex";
       divs.style.justifyContent = "space-between";
+      if (data.total_pages > DadApiJoke.currentPageJoke) {
+        divs.insertAdjacentElement("beforeend", span2);
+      }
+      if (DadApiJoke.currentPageJoke > 1) {
+        divs.insertAdjacentElement("afterbegin", span1);
+      }
 
-      divs.append(span1, span2);
       searchResults.appendChild(divs);
     })
     .catch((err) => {

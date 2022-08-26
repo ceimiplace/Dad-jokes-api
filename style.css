@@ -85,3 +85,6 @@ h2 {
 .srch-btn {
   padding: 5px;
 }
+input {
+  padding: 3px 0 3px 5px;
+}
