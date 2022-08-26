@@ -37,9 +37,9 @@ getImage.addEventListener("click", () => {
 });
 
 search.addEventListener("click", () => {
-  if (widgets.classList.contains("hide") == true) {
-    input.disabled = false;
+  if (widgets.classList.contains("hide")) {
     widgets.classList.remove("hide");
+    input.disabled = false;
   } else {
     input.disabled = true;
     widgets.classList.add("hide");
