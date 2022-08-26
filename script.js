@@ -7,6 +7,7 @@ const search = document.querySelector(".get-search-btn");
 const widgets = document.querySelector(".widgets");
 const input = widgets.querySelector("input");
 const searchResults = document.querySelector(".search-results");
+const searching = document.querySelector(".srch-btn");
 class GetData {
   constructor(url) {
     this.url = url;
@@ -46,11 +47,15 @@ search.addEventListener("click", () => {
   }
 });
 
-const searching = document.querySelector(".srch-btn");
 searching.addEventListener("click", () => {
-  DadApiJoke.currentPageJoke = 1;
   searchApi();
 });
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    searchApi();
+  }
+});
+
 function searchApi() {
   DadApiJoke.get(
     `search?term=${input.value}&limit=10&page=${DadApiJoke.currentPageJoke}`
