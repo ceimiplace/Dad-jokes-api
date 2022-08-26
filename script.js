@@ -10,9 +10,10 @@ const searchResults = document.querySelector(".search-results");
 class GetData {
   constructor(url) {
     this.url = url;
+    this.currentPageJoke = 1;
   }
-  get() {
-    return fetch(`${this.url}`, {
+  get(endpoint) {
+    return fetch(this.url + endpoint, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -22,55 +23,19 @@ class GetData {
 }
 const DadApiJoke = new GetData("https://icanhazdadjoke.com/");
 
-// this is basic way that i impremented it , but i refractored it using classes
-/*function getData() {
-  fetch("https://icanhazdadjoke.com/", {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-    },
-  })
-    .then((resp) => resp.json())
-    .then((data) => {
-      imageJoke.src = "";
-      textJoke.textContent = data.joke;
-    });
-}
-function getImg() {
-  fetch("https://icanhazdadjoke.com/", {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-    },
-  })
-    .then((resp) => resp.json())
-    .then((data) => {
-      textJoke.textContent = "";
-      imageJoke.src = `https://icanhazdadjoke.com/j/${data.id}.png`;
-    });
-}*/
 getJokes.addEventListener("click", () => {
-  DadApiJoke.get().then((data) => {
+  DadApiJoke.get("").then((data) => {
     imageJoke.src = "";
     textJoke.textContent = data.joke;
   });
 });
 getImage.addEventListener("click", () => {
-  DadApiJoke.get().then((data) => {
+  DadApiJoke.get("").then((data) => {
     textJoke.textContent = "";
     imageJoke.src = `https://icanhazdadjoke.com/j/${data.id}.png`;
   });
 });
 
-// fetch("https://icanhazdadjoke.com/search?term='dad'", {
-//   method: "GET",
-//   headers: {
-//     Accept: "application/json",
-//   },
-// })
-//   .then((resp) => resp.json())
-//   .then((data) => console.log(data));
-// adding search ui
 search.addEventListener("click", () => {
   if (widgets.classList.contains("hide") == true) {
     input.disabled = false;
@@ -83,15 +48,23 @@ search.addEventListener("click", () => {
 
 const searching = document.querySelector(".srch-btn");
 searching.addEventListener("click", () => {
-  fetch(`https://icanhazdadjoke.com/search?term=${input.value}&limit=10`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-    },
-  })
-    .then((resp) => resp.json())
+  DadApiJoke.currentPageJoke = 1;
+  searchApi();
+});
+function searchApi() {
+  DadApiJoke.get(
+    `search?term=${input.value}&limit=10&page=${DadApiJoke.currentPageJoke}`
+  )
     .then((data) => {
-      console.log(data);
+      return new Promise((resolve, reject) => {
+        if (data.total_jokes > 0) {
+          resolve(data);
+        } else {
+          reject("No jokes found");
+        }
+      });
+    })
+    .then((data) => {
       searchResults.textContent = "";
       let dataResults = data.results;
       dataResults.forEach((element) => {
@@ -99,5 +72,31 @@ searching.addEventListener("click", () => {
         appendeble.textContent = element.joke;
         searchResults.append(appendeble);
       });
+      return new Promise((resolve) => resolve(data));
+    })
+    .then((data) => {
+      console.log(data);
+      let span1 = document.createElement("span");
+      span1.innerHTML = `<i class="fa-solid fa-circle-arrow-left previous-search" ></i>`;
+      span1.addEventListener("click", () => {
+        DadApiJoke.currentPageJoke--;
+        searchApi();
+      });
+      let span2 = document.createElement("span");
+      span2.innerHTML = `<i class="fa-solid fa-circle-arrow-right next-search"></i>`;
+      span2.addEventListener("click", () => {
+        DadApiJoke.currentPageJoke++;
+        searchApi();
+      });
+      let divs = document.createElement("div");
+      divs.style.display = "flex";
+      divs.style.justifyContent = "space-between";
+
+      divs.append(span1, span2);
+      searchResults.appendChild(divs);
+    })
+    .catch((err) => {
+      searchResults.style.justifyContent = "center";
+      searchResults.innerHTML = `<div>No jokes found <i class="fa-solid fa-face-sad-tear"></i></div>`;
     });
-});
+}
