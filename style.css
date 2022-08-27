@@ -20,7 +20,7 @@ body {
   grid-template-rows: auto auto auto auto auto;
   gap: 10px;
 }
-h2 {
+h1 {
   grid-column: 1/4;
   grid-row: 1;
 }
